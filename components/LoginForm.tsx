@@ -14,15 +14,38 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { gql, useMutation } from "@apollo/client";
+import { useUser } from "@/hooks/use-user";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const { replace } = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { login: setUser } = useUser();
+  const [loginMutation, { loading }] = useMutation(gql`
+    mutation Login($username: String!, $password: String!) {
+      login(username: $username, password: $password) {
+        id
+      }
+    }
+  `);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically handle the login logic
-    alert(`Login attempted with username: ${username}`);
+    try {
+      const { data, errors } = await loginMutation({
+        variables: { username, password },
+      });
+      if (errors) {
+        throw new Error("Invalid username or password");
+      }
+      setUser(data?.login);
+      replace("/");
+    } catch (error) {
+      toast.error("Invalid username or password");
+    }
   };
 
   return (
@@ -59,7 +82,7 @@ export default function LoginForm() {
           </div>
         </CardContent>
         <CardFooter>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={loading}>
             Login
           </Button>
         </CardFooter>
