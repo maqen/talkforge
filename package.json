@@ -7,12 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "pnpm codegen && pnpm db:migrate && pnpm db:seed",
     "db:generate": "pnpm drizzle-kit generate",
     "db:migrate": "pnpm drizzle-kit migrate",
     "db:studio": "pnpm drizzle-kit studio",
     "db:seed": "pnpm tsx db/seed.ts",
-    "db:bootstrap": "pnpm db:migrate && pnpm db:seed",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "pnpm graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.13.1",
@@ -76,11 +76,13 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/client-preset": "^4.6.2",
     "@graphql-codegen/introspection": "^4.0.3",
     "@graphql-codegen/named-operations-object": "^3.1.0",
     "@graphql-codegen/typescript": "^4.1.3",
     "@graphql-codegen/typescript-operations": "^4.4.1",
     "@graphql-codegen/typescript-react-apollo": "^4.3.2",
+    "@graphql-codegen/typescript-resolvers": "^4.4.2",
     "@graphql-tools/schema": "^10.0.18",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
@@ -96,7 +98,10 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "bcrypt"
+      "@apollo/protobufjs",
+      "bcrypt",
+      "esbuild",
+      "sharp"
     ]
   }
 }

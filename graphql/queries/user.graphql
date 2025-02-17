@@ -1,0 +1,5 @@
+query User($id: String!) {
+  usersSingle(where: { id: { eq: $id } }) {
+    ...User
+  }
+}

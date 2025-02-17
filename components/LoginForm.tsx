@@ -18,12 +18,13 @@ import { gql, useMutation } from "@apollo/client";
 import { useUser } from "@/hooks/use-user";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "./ui/skeleton";
 
 export default function LoginForm() {
   const { replace } = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login: setUser } = useUser();
+  const { login: setUser, loading: loadingUser } = useUser();
   const [loginMutation, { loading }] = useMutation(gql`
     mutation Login($username: String!, $password: String!) {
       login(username: $username, password: $password) {
@@ -47,6 +48,18 @@ export default function LoginForm() {
       toast.error("Invalid username or password");
     }
   };
+
+  if (loadingUser) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <Skeleton className="h-4 w-4" />
+          </CardTitle>
+        </CardHeader>
+      </Card>
+    );
+  }
 
   return (
     <Card>

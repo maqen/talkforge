@@ -1,6 +1,5 @@
-query Users {
-  users {
-    id
-    username
+query Users($where: UsersFilters) {
+  users(where: $where) {
+    ...User
   }
 }

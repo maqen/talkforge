@@ -12,22 +12,7 @@ const config: CodegenConfig = {
   ignoreNoDocuments: true,
   generates: {
     "./graphql/generated.ts": {
-      plugins: [
-        "typescript",
-        "typescript-operations",
-        "typescript-react-apollo",
-        "named-operations-object",
-      ],
-      config: {
-        skipTypename: false,
-        withHooks: true,
-        withHOC: false,
-        withComponent: false,
-        useConsts: true,
-      },
-    },
-    "./graphql/schema.json": {
-      plugins: ["introspection"],
+      plugins: ["typescript-react-apollo", "named-operations-object"],
     },
   },
 };

@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -29,6 +29,17 @@ export const messages = pgTable("messages", {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
 });
+
+export const messagesRelations = relations(messages, ({ one }) => ({
+  sender: one(users, {
+    fields: [messages.senderId],
+    references: [users.id],
+  }),
+  recipient: one(users, {
+    fields: [messages.recipientId],
+    references: [users.id],
+  }),
+}));
 
 // Types for our schema
 export type User = typeof users.$inferSelect;

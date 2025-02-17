@@ -5,6 +5,9 @@ import ApolloProviderWithClient from "@/components/ApolloProviderWithClient";
 import { Toaster } from "@/components/ui/sonner";
 import LoginForm from "@/components/LoginForm";
 import { SignedIn, SignedOut, UserProvider } from "@/hooks/use-user";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import Sidebar from "@/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +30,10 @@ export default function RootLayout({
         <ApolloProviderWithClient>
           <UserProvider>
             <SignedIn>
-              {children}
+              <SidebarProvider>
+                <Sidebar />
+                <main>{children}</main>
+              </SidebarProvider>
               <Toaster />
             </SignedIn>
             <SignedOut>

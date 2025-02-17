@@ -1,0 +1,15 @@
+fragment Message on MessagesSelectItem {
+  id
+  content
+  createdAt
+  senderId
+  recipientId
+  sender {
+    id
+    username
+  }
+  recipient {
+    id
+    username
+  }
+}

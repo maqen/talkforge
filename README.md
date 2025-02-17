@@ -12,11 +12,13 @@ Requirements:
 - pnpm
 ```
 
-Install dependencies:
+Create environment file (`.env.local`)
 
 ```bash
-pnpm install
+mv env.local.example .env.local
 ```
+
+Set the `DATABASE_URL` variable if you need to.
 
 Start postgres database:
 
@@ -24,22 +26,10 @@ Start postgres database:
 docker compose up -d
 ```
 
-Create environment file (`.env.local`)
-```bash
-mv env.local.example .env.local
-````
-set the `DATABASE_URL` variable if you need to.
-
-Bootstrap the database:
+Install dependencies
 
 ```bash
-pnpm db:bootstrap
-```
-
-If you get an error about bcrypt not found, try run:
-
-```bash
-pnpm approve-builds bcrypt
+pnpm install
 ```
 
 Run the development server:
@@ -49,6 +39,12 @@ pnpm dev
 ```
 
 Visit [http://localhost:3000] you can login with `mrtest1:testtest` and `testguy2:testtest` for testing.
+
+If you get an error about bcrypt not found, try run:
+
+```bash
+pnpm approve-builds bcrypt
+```
 
 ## Realtime
 

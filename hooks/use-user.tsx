@@ -1,29 +1,47 @@
 "use client";
 
 import { UserFragment } from "@/graphql/generated";
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 interface UserContextType {
   user: UserFragment | undefined;
   login: (user: UserFragment) => void;
   logout: () => void;
+  loading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<UserFragment | undefined>(undefined);
 
   const login = (user: UserFragment) => {
     setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
   };
 
   const logout = () => {
     setUser(undefined);
+    localStorage.removeItem("user");
   };
 
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      setUser(JSON.parse(user));
+    }
+    setLoading(false);
+  }, []);
+
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </UserContext.Provider>
   );
