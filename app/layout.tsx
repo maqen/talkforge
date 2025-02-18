@@ -1,18 +1,14 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import "./globals.css";
 import ApolloProviderWithClient from "@/components/ApolloProviderWithClient";
-import { Toaster } from "@/components/ui/sonner";
 import LoginForm from "@/components/LoginForm";
-import { SignedIn, SignedOut, UserProvider } from "@/hooks/use-user";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import Sidebar from "@/components/Sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
+import { SignedIn, SignedOut, UserProvider } from "@/hooks/use-user";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Talkforge",
@@ -26,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} antialiased font-sans`}>
+      <body className={`${inter.variable} antialiased font-sans`}>
         <ApolloProviderWithClient>
           <UserProvider>
             <SignedIn>
