@@ -1,17 +1,16 @@
-import { db } from "@/db/db";
-import { users } from "@/db/schema";
-import { ApolloServer } from "@apollo/server";
-import { startServerAndCreateNextHandler } from "@as-integrations/next";
-import bcrypt from "bcrypt";
 import { buildSchema } from "drizzle-graphql";
+import { createYoga } from "graphql-yoga";
+import { createServer } from "node:http";
+import { db } from "./db/db";
+import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
+import { users } from "./db/schema";
 import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
 } from "graphql";
-import { NextRequest } from "next/server";
 
 const { entities } = buildSchema(db);
 
@@ -27,7 +26,7 @@ const loginMutation = {
     password: { type: new GraphQLNonNull(GraphQLString) },
   },
   resolve: async (
-    _: any,
+    _: unknown,
     { username, password }: { username: string; password: string }
   ) => {
     const user = await db.query.users.findFirst({
@@ -50,7 +49,7 @@ const loginMutation = {
   },
 };
 
-const extendedSchema = new GraphQLSchema({
+const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: "Query",
     fields: {
@@ -61,14 +60,16 @@ const extendedSchema = new GraphQLSchema({
     name: "Mutation",
     fields: {
       ...entities.mutations,
-      loginMutation,
+      login: loginMutation,
     },
   }),
   types: [...Object.values(entities.types), ...Object.values(entities.inputs)],
 });
 
-const server = new ApolloServer({ schema: extendedSchema });
+// Create Yoga server with extended schema
+const yoga = createYoga({ schema });
+const server = createServer(yoga);
 
-const handler = startServerAndCreateNextHandler<NextRequest>(server);
-
-export { handler as GET, handler as POST };
+server.listen(4000, () => {
+  console.info("Server is running on http://localhost:4000/graphql");
+});

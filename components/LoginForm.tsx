@@ -54,7 +54,7 @@ export default function LoginForm() {
       <Card>
         <CardHeader>
           <CardTitle>
-            <Skeleton className="h-4 w-4" />
+            <Skeleton className="h-4 w-32" />
           </CardTitle>
         </CardHeader>
       </Card>

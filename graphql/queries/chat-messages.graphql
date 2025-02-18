@@ -1,15 +1,10 @@
 query ChatMessages($userIds: [String!]!) {
- messages(where:  {
-    OR: [ {
-       senderId:  {
-          inArray: $userIds
-       }
-    }, {
-      recipientId:  {
-         inArray: $userIds
-      }
-    }]
- }) {
-  ...Message
- }
+  messages(
+    where: {
+      senderId: { inArray: $userIds }
+      recipientId: { inArray: $userIds }
+    }
+  ) {
+    ...Message
+  }
 }

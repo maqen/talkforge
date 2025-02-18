@@ -27,7 +27,7 @@ export const UserFragmentDoc = gql`
 export const ChatMessagesDocument = gql`
     query ChatMessages($userIds: [String!]!) {
   messages(
-    where: {OR: [{senderId: {inArray: $userIds}}, {recipientId: {inArray: $userIds}}]}
+    where: {senderId: {inArray: $userIds}, recipientId: {inArray: $userIds}}
   ) {
     ...Message
   }
@@ -107,8 +107,8 @@ export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserSuspenseQueryHookResult = ReturnType<typeof useUserSuspenseQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const UsersDocument = gql`
-    query Users($where: UsersFilters) {
-  users(where: $where) {
+    query Users($skipUserId: String) {
+  users(where: {id: {ne: $skipUserId}}) {
     ...User
   }
 }
@@ -126,7 +126,7 @@ export const UsersDocument = gql`
  * @example
  * const { data, loading, error } = useUsersQuery({
  *   variables: {
- *      where: // value for 'where'
+ *      skipUserId: // value for 'skipUserId'
  *   },
  * });
  */

@@ -1,5 +1,5 @@
-query Users($where: UsersFilters) {
-  users(where: $where) {
+query Users($skipUserId: String) {
+  users(where: { id: { ne: $skipUserId } }) {
     ...User
   }
 }
