@@ -21,12 +21,17 @@ import { Input } from "./ui/input";
 export default function Chat({ withUserId }: { withUserId: string }) {
   const [message, setMessage] = useState("");
   const { user } = useUser();
-  const { data, loading, refetch } = useChatMessagesQuery({
+  const {
+    data,
+    loading: initialLoading,
+    refetch,
+  } = useChatMessagesQuery({
     variables: {
       userIds: [withUserId, user!.id],
     },
     skip: !user,
-    pollInterval: 3000,
+    pollInterval: 2500,
+    notifyOnNetworkStatusChange: false,
   });
   const [sendMessage, { loading: sending }] = useSendMessageMutation();
 
@@ -44,7 +49,7 @@ export default function Chat({ withUserId }: { withUserId: string }) {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (initialLoading) return <div>Loading chat messages...</div>;
 
   return (
     <div className="space-y-2 flex flex-col h-full">
@@ -53,18 +58,16 @@ export default function Chat({ withUserId }: { withUserId: string }) {
           <ChatMessage key={m.id} message={m} />
         ))}
       </div>
-      <div className="flex gap-2">
-        <form onSubmit={handleSendMessage}>
-          <Input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <Button type="submit" disabled={message.length === 0 || sending}>
-            {sending ? "Sending..." : "Send"}
-          </Button>
-        </form>
-      </div>
+      <form onSubmit={handleSendMessage} className="flex gap-2">
+        <Input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <Button type="submit" disabled={message.length === 0 || sending}>
+          {sending ? "Sending..." : "Send"}
+        </Button>
+      </form>
     </div>
   );
 }
