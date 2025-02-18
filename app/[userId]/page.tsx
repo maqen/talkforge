@@ -6,12 +6,6 @@ import { useUserQuery } from "@/graphql/generated";
 import { gql, useQuery } from "@apollo/client";
 import { useParams } from "next/navigation";
 
-type ChatPageProps = {
-  params: {
-    userId: string;
-  };
-};
-
 const UserDocument = gql`
   query User($id: String!) {
     usersSingle(where: { id: { eq: $id } }) {
@@ -44,7 +38,9 @@ export default function ChatPage() {
       <h1 className="text-2xl font-bold mb-4">
         Chat with @{userData?.usersSingle?.username}
       </h1>
-      <Chat withUserId={userId as string} />
+      <div className="h-full">
+        <Chat withUserId={userId as string} />
+      </div>
     </div>
   );
 }

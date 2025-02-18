@@ -9,10 +9,21 @@ const schemaString = printSchema(schema);
 const config: CodegenConfig = {
   schema: schemaString,
   documents: ["./graphql/**/*.{graphql,js,ts,jsx,tsx}"],
-  ignoreNoDocuments: true,
   generates: {
     "./graphql/generated.ts": {
-      plugins: ["typescript-react-apollo", "named-operations-object"],
+      plugins: [
+        "typescript",
+        "typescript-operations",
+        "typescript-react-apollo",
+      ],
+      config: {
+        useConst: true,
+        skipTypename: false,
+        withHooks: true,
+      },
+    },
+    "./graphql/schema.json": {
+      plugins: ["introspection"],
     },
   },
 };

@@ -30,11 +30,7 @@ export default function Sidebar() {
 
   const { data } = useUsersQuery({
     variables: {
-      where: {
-        id: {
-          ne: user?.id,
-        },
-      },
+      skipUserId: user?.id,
     },
   });
   return (

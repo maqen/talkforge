@@ -1,5 +1,6 @@
 query ChatMessages($userIds: [String!]!) {
   messages(
+    orderBy: { createdAt: desc }
     where: {
       senderId: { inArray: $userIds }
       recipientId: { inArray: $userIds }

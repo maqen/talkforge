@@ -1,0 +1,13 @@
+mutation SendMessage($content: String!, $senderId: String!, $recipientId: String!) {
+  insertIntoMessagesSingle(values: {
+    content: $content,
+    senderId: $senderId,
+    recipientId: $recipientId,
+  }) {
+    id
+    content
+    createdAt
+    senderId
+    recipientId
+  }
+}
