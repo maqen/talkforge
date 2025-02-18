@@ -44,4 +44,4 @@ Run the development server:
 pnpm dev
 ```
 
-Visit [http://localhost:3000] you can login with `mrtest1:testtest` and `testguy2:testtest` for testing.
+Visit [http://localhost:3000](http://localhost:3000) you can login with `mrtest1:testtest` and `testguy2:testtest` for testing.
